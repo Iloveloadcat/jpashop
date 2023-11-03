@@ -1,7 +1,6 @@
 package jpabook.jpashop;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import jpabook.jpashop.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
