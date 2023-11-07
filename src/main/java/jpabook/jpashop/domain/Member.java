@@ -20,9 +20,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member") //Member의 입장에서 주문은 여러개이므로 일대다
     //mappedBy = "member" => order테이블에 있는 member필드에 의해 매핑이 됨을 명시
-    private List<Order> order = new ArrayList<>();
-
-
-
+    private List<Order> orders = new ArrayList<>();
 }
 
