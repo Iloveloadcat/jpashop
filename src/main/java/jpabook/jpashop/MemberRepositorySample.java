@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class MemberRepository {
+public class MemberRepositorySample {
 
     @PersistenceContext //EntityManager를 Bean으로 주입시키기 위해 사용
     private EntityManager em; //특정 작업을 위해 데이터베이스에 액세스 하는 역할

@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class MemberRepositoryTest {
 
-    @Autowired MemberRepository memberRepository;
-
+    @Autowired MemberRepositorySample memberRepositorySample;
     @Test
     @Transactional //EntityManager를 사용하는 모든 데이터의 변경은 transaction이 필요하다.
     //테스트케이스에서 @Transactional이 있으면 테스트가 끝난후 바로 롤백을 처리함. 왜냐하면, 데이터가 들어가서 커밋되버리면 반복적인 테스트를 못하기 때문이다.
@@ -26,8 +25,8 @@ public class MemberRepositoryTest {
         member.setUsername("test");
 
         //when
-        Long savedId = memberRepository.save(member);
-        Member findMember = memberRepository.find(savedId);
+        Long savedId = memberRepositorySample.save(member);
+        Member findMember = memberRepositorySample.find(savedId);
 
         //then
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
