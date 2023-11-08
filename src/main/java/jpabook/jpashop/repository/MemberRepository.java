@@ -23,7 +23,7 @@ public class MemberRepository {
     }
 
     public Member findOne(Long id) {
-        return em.find(Member.class, id);
+        return em.find(Member.class, id); //조회 할때 영속성컨텍스트의 1차 캐시에 저장됨
     }
 
     public List<Member> findAll() {
