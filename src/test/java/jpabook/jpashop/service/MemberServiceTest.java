@@ -23,7 +23,8 @@ public class MemberServiceTest {
     @Autowired MemberRepository memberRepository;
 
     @Test
-    //@RollBack(false)를 넣으면 insert쿼리로그가 안보임
+    @Rollback(value = false)
+    //@RollBack(false)를 넣으면 insert쿼리로그가 보임
     public void 회원가입() throws Exception {
 
         //given

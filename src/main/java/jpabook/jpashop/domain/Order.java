@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.collection.internal.PersistentList;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static javax.persistence.FetchType.*;
@@ -15,6 +18,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id @GeneratedValue
     @Column(name = "order_id")
@@ -49,4 +53,49 @@ public class Order {
         this.delivery = delivery;
         delivery.setOrder(this); //양방향
     }
+    
+    //==생성메서드==//
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrdetStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    //==비즈니스로직==//
+    /**
+     * 주문 취소
+     */
+    public void cancel() {
+        //이미 배송이 된 경우는 취소 불가ㅏ
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다");
+        }
+
+        this.setStatus(OrdetStatus.CANCEL);
+
+        //재고원복
+        for(OrderItem orderItem : orderItems) {
+            orderItem.cancel(); //1번의 주문에 여러건의 상품이 걸리기 때문에 각 상품별로 cancel처리
+        }
+    }
+
+    /**
+     * 전체 주문 가격 조회
+     * */
+    public int getTotalPrice() {
+/*        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;*/ //아래와 같은코드
+
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
+    }
+
 }
