@@ -3,7 +3,7 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrdetStatus;
+import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.exception.NotEnoughStockException;
@@ -44,7 +44,7 @@ public class OrderServiceTest {
         //then
         Order getOrder = orderRepository.findOne(orderId);
 
-        assertEquals("상품 주문시 상태는 ORDER!!", OrdetStatus.ORDER, getOrder.getStatus());
+        assertEquals("상품 주문시 상태는 ORDER!!", OrderStatus.ORDER, getOrder.getStatus());
         assertEquals("주문한 상품종류수가 정확해야한다.", 1, getOrder.getOrderItems().size());
         assertEquals("주문가격은 가격 * 수량이다", 10000 * orderCount, getOrder.getTotalPrice());
         assertEquals("주문 수량만큼 재고가 줄어야 한다.", 5, book.getStockQuantity());
@@ -64,9 +64,10 @@ public class OrderServiceTest {
 
         //then
         Order getOrder  = orderRepository.findOne(orderId);
-        assertEquals("주문 취소시 상태는 CANCEL", OrdetStatus.CANCEL, getOrder.getStatus());
+        assertEquals("주문 취소시 상태는 CANCEL", OrderStatus.CANCEL, getOrder.getStatus());
         assertEquals("주문이 취소된 상품은 재고가 원복되어야 한다", 10, item.getStockQuantity());
     }
+    
 
     @Test(expected = NotEnoughStockException.class)
     public void 상품주문_재고수량초과() throws Exception {
