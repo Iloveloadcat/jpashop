@@ -62,16 +62,19 @@ public class ItemController {
     }
 
     @PostMapping("/items/{itemId}/edit")
-    public String updateItem(@ModelAttribute("form") BookForm form){
-        Book book = new Book();
-        book.setId(form.getId());//DB에서 한번 저장 된 후 불러온 데이터 => 준영속 엔티티(영속성엔티티가 더는 관리하지 않는 앤티티)
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+    public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form){
 
-        itemService.saveItem(book);
+//        Book book = new Book();
+//        book.setId(form.getId());//DB에서 한번 저장 된 후 불러온 데이터 => 준영속 엔티티(영속성엔티티가 더는 관리하지 않는 앤티티)
+//        book.setName(form.getName());
+//        book.setPrice(form.getPrice());
+//        book.setStockQuantity(form.getStockQuantity());
+//        book.setAuthor(form.getAuthor());
+//        book.setIsbn(form.getIsbn());
+//        itemService.saveItem(book);
+
+        //파라미터 값이 많아지면 Dto를 사용
+        itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getStockQuantity());
         return "redirect:/items";
     }
 }
